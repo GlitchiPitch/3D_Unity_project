@@ -24,10 +24,24 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            Jump();
         }
     }
 
+    void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+    }
+
+
+    private void OnCollisionEnter(Collision other) 
+    {
+        if (other.gameObject.CompareTag("EnemyHead")) 
+        {
+            Destroy(other.transform.parent.gameObject);
+            Jump();
+        }  
+    }
     bool IsGrounded()
     {
         return Physics.CheckSphere(groundCheck.position, .1f, ground);
